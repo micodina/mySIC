@@ -1,0 +1,82 @@
+# Michaël
+# 21/09/2015
+
+---
+- name: "6_1_1: Enable anacron Daemon"
+  yum: name=anacron state=present
+  tags: 
+    - "6_1_1"
+    - level1
+
+- name: "6_1_2: Enable crond Daemon"
+  service: name=crond state=started
+  tags: 
+    - "6_1_2"
+    - level1
+
+- name: "6_1_3 Set User/Group Owner and Permission on /etc/anacrontab"
+  file: path=/etc/anacrontab owner=root group=root mode=0600
+  tags: 
+    - "6_1_3"
+    - level1
+
+- name: "6_1_4 Set User/Group Owner and Permission on /etc/crontab"
+  file: path=/etc/crontab owner=root group=root mode=0600
+  tags: 
+    - "6_1_4"
+    - level1
+
+- name: "6_1_5 Set User/Group Owner and Permission on /etc/cron.hourly"
+  file: path=/etc/cron.hourly owner=root group=root mode=0600
+  tags: 
+    - "6_1_5"
+    - level1
+
+- name: "6_1_6 Set User/Group Owner and Permission on /etc/cron.daily"
+  file: path=/etc/cron.daily owner=root group=root mode=0600
+  tags: 
+    - "6_1_6"
+    - level1
+
+- name: "6_1_7 Set User/Group Owner and Permission on /etc/cron.weekly"
+  file: path=/etc/cron.weekly owner=root group=root mode=0600
+  tags: 
+    - "6_1_7"
+    - level1
+
+- name: "6_1_8 Set User/Group Owner and Permission on /etc/cron.monthly"
+  file: path=/etc/cron.monthly owner=root group=root mode=0600
+  tags: 
+    - "6_1_8"
+    - level1
+
+- name: "6_1_9 Set User/Group Owner and Permission on /etc/cron.d"
+  file: path=/etc/cron.d owner=root group=root mode=0600
+  tags: 
+    - "6_1_9"
+    - level1
+
+- name: "6_1_10: Restrict at Daemon (copy at.allow)"
+  copy: src=at.allow dest=/etc/at.allow owner=root group=root mode=0600
+  tags: 
+    - "6_1_10"
+    - level1
+
+- name: "6_1_10 Restrict at Daemon (at.deny absent)"
+  file: path=/etc/at.deny state=absent
+  tags: 
+    - "6_1_10"
+    - level1
+
+- name: "6_1_11 Restrict at/cron to Authorized Users (copy cron.allow)"
+  copy: src=cron.allow dest=/etc/cron.allow owner=root group=root mode=0600
+  tags: 
+    - "6_1_11"
+    - level1
+
+- name: "6_1_11 Restrict at/cron to Authorized Users (cron.deny absent)"
+  file: path=/etc/cron.deny state=absent
+  tags: 
+    - "6_1_11"
+    - level1
+

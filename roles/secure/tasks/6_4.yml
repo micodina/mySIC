@@ -1,0 +1,9 @@
+# Michaël 
+# 21/09/2015
+
+---
+- name: "6_4: Restrict root Login to Sytem Console"
+  copy: src=securetty dest=/etc/securetty owner=root group=root mode=0600
+  tags:
+    - level1
+

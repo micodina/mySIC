@@ -1,0 +1,4 @@
+---
+- name: "5_1_5: Configure rsyslog to send log to Remote Log Host"
+#  debug: msg="Je vais configurer {{ syslog_server }}"
+  lineinfile: dest=/etc/rsyslog.conf state=present regexp="^\*\.\* @" line="*.* @@{{ syslog_server }}" insertafter=EOF

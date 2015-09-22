@@ -1,0 +1,6 @@
+[mypf]
+beret ansible_connection=ssh ansible_ssh_user=mic ansible_become_pass=mic
+in000ws1 ansible_connection=ssh ansible_ssh_user=osadmin ansible_become_pass=Adm3Pl2
+
+[mypf:vars]
+syslog_server=mysyslog

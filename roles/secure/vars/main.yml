@@ -1,0 +1,4 @@
+---
+# MC: C'est pas beau... jveux pas de variables !
+partitioning: True
+dev_shm_read_only: False

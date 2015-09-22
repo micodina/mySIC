@@ -1,0 +1,47 @@
+# Michaël 
+# 21/09/2015
+
+---
+- name: "6_3_1: Upgrade Password Hashing Algorithm to SHA-512"
+  shell: authconfig --test | grep hashing
+  register: result
+  ignore_errors: True
+  changed_when: "'sha512' not in result.stdout"
+  always_run: yes
+  tags:
+    - "6_3_1"
+    - level1
+
+- name: "6_3_1: \" .. je remédie"
+  shell: grep '^.*:\$[^6]' /etc/shadow | cut -f1 -d':' | grep -v root | xargs echo "chage -d"
+  when: "'sha512' not in result.stdout"
+  tags:
+    - "6_3_1"
+    - level1
+
+
+- name: "6_3_2: Set Password Creation Requirement Parameters Using pam_cracklib"
+  lineinfile: dest=/etc/pam.d/system-auth state=present regexp="pam_cracklib.so" line="password    required     pam_cracklib.so try_first_pass retry=3 minlen=14,dcredit=-1,ucredit=-1,ocredit=-1,lcredit=-1"
+  tags:
+    - "6_3_2"
+    - level1
+
+#- name: "6_3_3: "
+#  tags:
+#    - "6_3_3"
+#    - level1
+
+#- name: "6_3_4: "
+#  tags:
+#    - "6_3_4"
+#    - level1
+
+#- name: "6_3_5: "
+#  tags:
+#    - "6_3_5"
+#    - level2
+
+#- name: "6_3_6: "
+#  tags:
+#    - "6_3_6"
+#    - level1

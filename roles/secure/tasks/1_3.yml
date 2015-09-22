@@ -1,0 +1,38 @@
+# Pascal (adapté par Michaël)
+# 21/09/2015
+
+---
+
+- name: 1_3_1 Install AIDE (Scored)
+  yum: name=aide state=present
+  register: aide_installed
+  tags:
+  - level2
+
+- name: 1_3_1 Install AIDE (Scored)
+  command: /usr/sbin/aide --init
+  when: aide_installed.changed == True
+  tags:
+  - level2
+
+- name: 1_3_1 Install AIDE (Scored)
+  stat: path=/var/lib/aide/aide.db.new.gz
+  register: aide_db_path
+  when:
+  - aide_installed.changed == True
+  tags:
+  - level2
+
+- name: 1_3_1 Install AIDE (copy db) (Scored)
+  command: mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+  when:
+  - aide_installed.changed == True
+  - aide_db_path.stat.exists == True
+  tags:
+  - level2
+
+- name: 1_3_2 Implement Periodic Execution of File Integrity (Scored)
+  cron: name="Check files integrity" minute="0" hour="5" job="/usr/sbin/aide --check"
+  tags:
+  - level2
+

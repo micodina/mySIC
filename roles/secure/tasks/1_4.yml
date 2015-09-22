@@ -1,0 +1,46 @@
+# Pascal (adapté par Michaël)
+# 21/09/2015
+
+---
+
+- name: 1_4_1 Enable SELinux in /etc/grub.conf (Scored)
+  lineinfile: >
+    state=absent
+    dest=/etc/grub.conf
+    line="selinux=0"
+  tags:
+  - level2
+
+- name: 1_4_1 Enable SELinux in /etc/grub.conf (Scored)
+  lineinfile: >
+   state=absent
+   dest=/etc/grub.conf
+   line="enforcing=0"
+  tags:
+  - level2
+
+- name: 1_4_2 Set the SELinux State (Scored)
+  yum: name=selinux-policy-targeted state=present
+  tags:
+  - level2
+
+- name: 1_4_3 Set the SELinux Policy (Scored)
+  selinux: state=enforcing policy=targeted
+  ignore_errors: yes
+  tags:
+  - level2
+
+- name: 1_4_4 Remove SETroubleshoot (Scored)
+  yum: name=setroubleshoot state=absent
+  tags:
+  - level2
+
+- name: 1_4_5 Remove MCS Translation Service (mcstrans) (Scored)
+  yum: name=mcstrans state=absent
+  tags:
+  - level2
+
+- name: 1_4_6 Check for unconfined daemons (Scored)
+  debug: msg="*** Check via cron jobs or manually."
+  tags:
+  - level2

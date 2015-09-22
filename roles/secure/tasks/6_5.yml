@@ -1,0 +1,3 @@
+---
+- name: "6_5: Restrict Access to the su Command"
+  debug: msg="ok, je tripatouille /etc/pam.d/su"

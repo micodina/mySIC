@@ -1,0 +1,10 @@
+# Michaël 
+# 21/09/2015
+
+---
+- name: "Check version"
+  fail: msg="Le serveur proposé n'est pas compatible avec cette version des scripts..."
+# Platon G2R3 = RHEL 6.6
+#  when: ansible_os_family != 'RedHat' or ansible_distribution_version != '6.6'
+# ... mais on va tester sur la famille RHEL 6.x
+  when: ansible_os_family != 'RedHat' or  ansible_distribution_major_version != '6'

@@ -1,0 +1,147 @@
+# Pascal (adapté par Michaël)
+# 21/09/2015
+
+---
+
+- name: 1_1_1 Create Separate Partition for /tmp (Scored)
+  debug: msg="/!\ Ensure there is a separate partition dedicated to /tmp"
+  tags:
+  - level1
+
+- name: 1_1_2 - 4 Set nodev, nosuid, noexec option for /tmp Partition (Scored)
+  mount: name="/tmp" src="/tmp" state="mounted" opts="nodev,nosuid,noexec" fstype=ext4
+  when: partitioning == True
+  tags:
+  - level1
+
+- name: 1_1_5 Create Separate Partition for /var (Scored)
+  debug: msg="/!\ Ensure there is a separate partition dedicated to /var"
+  tags:
+  - level1
+
+- name: 1_1_6 Bind Mount the /var/tmp directory to /tmp (Scored)
+  mount: name="/var/tmp" src="/tmp" opts=bind state=mounted fstype=ext4
+  when: partitioning == True
+  tags:
+  - level1
+
+- name: 1_1_7 Create Separate Partition for /var/log (Scored)
+  debug: msg="/!\ Ensure there is a separate partition dedicated to /var/log"
+  tags:
+  - level1
+
+- name: 1_1_8 Create Separate Partition for /var/log/audit (Scored)
+  debug: msg="/!\ Ensure there is a separate partition dedicated to /var/log/audit"
+  tags:
+  - level1
+
+- name: 1_1_9 Create Separate Partition for /home (Scored)
+  debug: msg="/!\ Ensure there is a separate partition dedicated to /home"
+  tags:
+  - level1
+
+- name: 1_1_10 Add nodev Option to /home (Scored)
+  mount: name="/home" src="/home" state=mounted opts=remount,nodev fstype="ext4"
+  when: partitioning == True
+  tags:
+  - level1
+
+- name: 1_1_11 Add nodev Option to Removable Media Partitions (Not Scored)
+  debug: msg="/!\ Ensure removable partitions have nodev option"
+  tags:
+  - level1
+
+- name: 1_1_12 Add noexec Option to Removable Media Partitions (Not Scored)
+  debug: msg="/!\ Ensure removable partitions have noexec option"
+  tags:
+  - level1
+
+- name: 1_1_13 Add nosuid Option to Removable Media Partitions (Not Scored)
+  debug: msg="/!\ Ensure removable partitions have nosuid option"
+  tags:
+  - level1
+
+- name: 1_1_14 - 16 Add nodev Option to /dev/shm Partition (Scored)
+  mount: name="/dev/shm" src="/dev/shm" state="mounted" opts="nodev,nosuid,noexec" fstype="tmpfs"
+  when: dev_shm_read_only == False
+  tags:
+  - level1
+
+- name: 1_1_17_1 Set Sticky Bit on All World-Writable Directories (preparation) (Scored)
+  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 -print 2>/dev/null
+  failed_when: False
+  changed_when: False
+  always_run: True
+  register: sticky_bit_dirs
+  tags:
+  - level1
+
+- name: 1_1_17_2 Set Sticky Bit on All World-Writable Directories (Scored)
+  file: path='{{ item }}' mode="a+t"
+  with_items: sticky_bit_dirs.stdout_lines
+  tags:
+  - level1
+
+- name: 1_1_18 Disable Mounting of cramfs Filesystems (Not Scored)
+  lineinfile:
+    dest=/etc/modprobe.d/CIS.conf
+    line='install cramfs /bin/true'
+    state=present
+    create=yes
+  tags:
+    - level2
+
+- name: 1_1_19 Disable Mounting of freevxfs Filesystems (Not Scored)
+  lineinfile: 
+    dest=/etc/modprobe.d/CIS.conf
+    line='install freevxfs /bin/true'
+    state=present
+    create=yes
+  tags:
+    - level2
+
+- name: 1_1_20 Disable Mounting of jffs2 Filesystems (Not Scored)
+  lineinfile: 
+    dest=/etc/modprobe.d/CIS.conf
+    line='install jffs2 /bin/true'
+    state=present
+    create=yes
+  tags:
+  - level2
+
+- name: 1_1_21 Disable Mounting of hfs Filesystems (Not Scored)
+  lineinfile: 
+    dest=/etc/modprobe.d/CIS.conf
+    line='install hfs /bin/true'
+    state=present
+    create=yes
+  tags:
+  - level2
+
+- name: 1_1_22 Disable Mounting of hfsplus Filesystems (Not Scored)
+  lineinfile:
+    dest=/etc/modprobe.d/CIS.conf
+    line='install hfsplus /bin/true'
+    state=present
+    create=yes
+  tags:
+  - level2
+
+- name: 1_1_23 Disable Mounting of squashfs Filesystems (Not Scored)
+  lineinfile:
+    dest=/etc/modprobe.d/CIS.conf
+    line='install squashfs /bin/true'
+    state=present
+    create=yes
+  tags:
+  - level2
+
+  - name: 1_1_24 Disable Mounting of udf Filesystems (Not Scored)
+  lineinfile:
+    dest=/etc/modprobe.d/CIS.conf
+    line='install udf /bin/true'
+    state=present
+    create=yes
+  tags:
+  - level2
+

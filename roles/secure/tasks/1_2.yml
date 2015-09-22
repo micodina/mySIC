@@ -1,0 +1,55 @@
+# Pascal (adapté par Michaël)
+# 21/09/2015
+
+---
+
+#- name: 1_2_1_1 Configure Connection to PLATON Repositories (CHECK)
+#  command: yum -C repolist enabled | grep G02R03C00
+#  register: repo_server_rc
+#  changed_when: False
+#  always_run: True
+#  tags:
+#  - level1
+
+#- name: 1_2_1_2 Configure Connection to PLATON Repositories (CHECK)
+#  debug: msg="/!\ Ensure that PLATON Repositries are configured"
+#  when: repo_server_rc.rc == 1
+#  tags:
+#  - level1
+
+
+#- name: 1_2_2 Verify that PLATON GPG key is installed (CHECK)
+#  tags:
+
+- name: 1_2_3 Verify that gpgcheck is globally actived (CHECK)
+  lineinfile: >
+    dest=/etc/yum.conf
+    line='gpgcheck=1'
+    state=present
+  tags:
+  - level1
+
+- name: 1_2_5 Obtain Software Package Updates with yum (Not Scored)
+  yum: name=* state=latest
+  tags:
+  - level1
+
+- name: 1_2_6_1 Verify Package Integrity using RPM (Not Scored)
+  command: rpm -qVa | awk '$2 != "c" { print $0}'
+  register: package_integrity_fail_list
+  always_run: True
+  tags:
+  - level1
+
+#- name: 1_2_6_2 List of Invalid Integrity Package (Not Scored) #>>> MC: marche pas si commande précédente ne renvoit rien
+#  debug: var={{ items }} 
+#  with_items: package_integrity_fail_list
+#  always_run: True
+#  tags:
+#  - level1
+
+- name: 1_2_4 Disable the rhnsd daemon (Not Scored)
+  command: chkconfig rhnsd off
+  tags:
+  - level2
+

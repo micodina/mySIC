@@ -1,0 +1,6 @@
+# Michaël 
+# 21/09/2015
+
+---
+- name: restart sshd
+  service: name=sshd state=restarted

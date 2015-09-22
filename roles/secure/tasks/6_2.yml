@@ -1,0 +1,108 @@
+# Michaël 
+# 21/09/2015
+
+---
+- name: "6_2_1: Set SSH Protocol to 2"
+  lineinfile: dest=/etc/ssh/sshd_config state=present regexp=^Present line="Protocol 2"
+  notify: restart sshd
+  tags:
+    - "6_2_1"
+    - level1
+
+- name: "6_2_2: Set LogLevel to INFO"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^LogLevel line="LogLevel INFO"
+  notify: restart sshd
+  tags:
+    - "6_2_2"
+    - level1
+
+- name: "6_2_3: Set Permissions on /etc/ssh/sshd_config"
+  file: path=/etc/ssh/sshd_config owner=root group=root mode=0600  
+  tags:
+    - "6_2_3"
+    - level1
+  
+- name: "6_2_4: Disable SSH X11 Forwarding"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^X11Forwarding line="X11Forwarding no"
+  notify: restart sshd
+  tags:
+    - "6_2_4"
+    - level1
+
+- name: "6_2_5: Set MaxAuthTries to 4 or less"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^MaxAuthTries line="MaxAuthTries 4"
+  notify: restart sshd
+  tags:
+    - "6_2_5"
+    - level1
+
+- name: "6_2_6: Set SSH IgnoreRhosts to Yes"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^IgnoreRhosts line="IgnoreRhosts Yes"
+  notify: restart sshd
+  tags:
+    - "6_2_6"
+    - level1
+
+- name: "6_2_7: Set SSH HostBasedAuthentication to No"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^HostBasedAuthentication line="HostBasedAuthentication no"
+  notify: restart sshd
+  tags:
+    - "6_2_7"
+    - level1
+
+- name: "6_2_8: Disable Root Login "
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^PermitRootLogin line="PermitRootLogin No"
+  notify: restart sshd
+  tags:
+    - "6_2_8"
+    - level1
+
+- name: "6_2_9: SSH PermitEmptyPasswords to No "
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^PermitEmptyPasswords line="PermitEmptyPasswords No"
+  notify: restart sshd
+  tags:
+    - "6_2_9"
+    - level1
+
+- name: "6_2_10: Do not allow users to set Environment Options"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^PermitUserEnvironment line="PermitUserEnvironment no"
+  notify: restart sshd
+  tags:
+    - "6_2_10"
+    - level1
+
+#- name: "6_2_11: Use Only Approved Cipher in counter Mode "
+#  lineinfile: dest=/etc/ssh/sshd_config regexp=^ line=""
+#  tags:
+#    - "6_2_11"
+#    - level1
+
+- name: "6_2_12: Set Idle Timeout Interval for User Login - ClientAliveInterval"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^ClientAliveInterval line="ClientAliveInterval 300"
+  notify: restart sshd
+  tags:
+    - "6_2_12"
+    - level1
+
+- name: "6_2_12: Set Idle Timeout Interval for User Login - ClientAliveCountMax"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^ClientAliveCountMax line="ClientAliveCountMax 0"
+  notify: restart sshd
+  tags:
+    - "6_2_13"
+    - level1
+
+#- name: "6_2_13: Limit Access via ssh"
+#  lineinfile: dest=/etc/ssh/sshd_config regexp=^ line=""
+#  tags:
+#    - "6_2_13"
+#    - level1
+
+- name: "6_2_14: Set SSH Banner"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^Banner line="Banner /etc/issue.net"
+# A completer... faut-il copier unn fichier standard en cas d'absence, laisser l'opérateur choisir le fichier ?
+  tags:
+    - "6_2_14"
+    - level1
+
+
+

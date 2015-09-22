@@ -1,0 +1,8 @@
+# Michaël 
+# 21/09/2015
+
+---
+- hosts: all
+  sudo: yes
+  roles:
+  - secure

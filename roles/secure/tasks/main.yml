@@ -1,0 +1,14 @@
+# Michaël 
+# 21/09/2015
+---
+- include: 0.yml
+- include: 1_1.yml tags=1_1
+- include: 1_2.yml tags=1_2
+- include: 1_3.yml tags=1_3
+- include: 1_4.yml tags=1_4
+- include: 5_1.yml tags=5_1
+- include: 6_1.yml tags=6_1
+- include: 6_2.yml tags=6_2
+- include: 6_3.yml tags=6_3
+- include: 6_4.yml tags=6_4
+- include: 6_5.yml tags=6_5
